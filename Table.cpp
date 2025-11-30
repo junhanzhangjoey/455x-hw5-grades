@@ -5,7 +5,19 @@
 
 // Table.cpp  Table class implementation
 
-
+/*
+ * Table.cpp
+ * ----------
+ * Implementation for the Table class, a hash table that uses
+ * separate chaining with linked lists. Each bucket in the hash
+ * table is a ListType (Node*), and collisions are resolved by
+ * inserting new nodes at the front of the list.
+ *
+ * Representation:
+ *   - arr: dynamically allocated array of ListType
+ *   - hashSize: number of buckets
+ *   - hashCode(): maps a string key into [0, hashSize)
+ */
 #include "Table.h"
 
 #include <iostream>
@@ -29,38 +41,52 @@ using namespace std;
 
 //*************************************************************************
 
-
+//*************************************************************************
+// Constructor: creates a table with default size
 Table::Table() {
    arr = new ListType[HASH_SIZE]();
    hashSize = HASH_SIZE;
 }
 
-
+//*************************************************************************
+// Constructor: creates a table with a given hash size
 Table::Table(unsigned int hSize) {
    arr = new ListType[hSize]();
    hashSize = hSize;
 }
 
-
+//*************************************************************************
+// lookup:
+//     Returns a pointer to the value for the given key,
+//     or nullptr if key not present.
 int * Table::lookup(const string &key) {
    unsigned int idx = hashCode(key);
    ListType list = arr[idx];
    return listLookup(list, key);
 }
 
-
+//*************************************************************************
+// remove:
+//     Removes the node with the given key.
+//     Returns true if removed, false if key not found.
 bool Table::remove(const string &key) {
    unsigned int idx = hashCode(key);
    ListType &list = arr[idx];
    return listRemove(list,key);
 }
 
-
+//*************************************************************************
+// insert:
+//     Inserts (key, value) into the table.
+//     Returns false if key already exists.
 bool Table::insert(const string &key, int value) {
    unsigned int idx = hashCode(key);
    return listInsert(arr[idx],key, value);
 }
 
+//*************************************************************************
+// numEntries:
+//     Returns number of total entries stored in all buckets.
 int Table::numEntries() const {
    int count = 0;
    for(unsigned int i = 0; i < hashSize; i++){
@@ -74,6 +100,9 @@ int Table::numEntries() const {
 }
 
 
+//*************************************************************************
+// printAll:
+//     Prints all key-value pairs in the table (unordered).
 void Table::printAll() const {
    for(unsigned int i = 0; i < hashSize; i++){
       ListType track = arr[i];
@@ -84,7 +113,13 @@ void Table::printAll() const {
    }
 }
 
-
+//*************************************************************************
+// hashStats:
+//     Prints hash table statistics to the given output stream:
+//       - number of buckets
+//       - number of entries
+//       - number of non-empty buckets
+//       - length of longest chain
 void Table::hashStats(ostream &out) const {
    int non_empty = 0;
    int longest_chain = 0;

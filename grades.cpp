@@ -31,6 +31,25 @@ void printCommandSum(){
    cout << "help" << endl;
    cout << "quit" << endl;
 }
+/*
+ * Main driver for the grade table program.
+ *
+ * Supports the following commands:
+ *    insert name score    — inserts a new entry
+ *    change name score    — updates an existing score
+ *    lookup name          — prints the score for the name
+ *    remove name          — removes the entry for the name
+ *    print                — prints all entries
+ *    size                 — prints number of entries in table
+ *    stats                — prints hash table statistics
+ *    help                 — prints command summary
+ *    quit                 — exits program
+ *
+ * Tables can be created with either:
+ *    grades               — uses default hash size
+ *    grades hashSize      — uses custom hash size
+ */
+
 int main(int argc, char * argv[]) {
 
 
